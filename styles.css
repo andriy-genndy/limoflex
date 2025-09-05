@@ -671,24 +671,31 @@ h1, h2, h3 {
         display: flex;
     }
 
+
     .nav-menu {
         position: fixed;
-        left: -100%;
+        right: -100%;
+        left: auto;
         top: 70px;
         flex-direction: column;
         background-color: rgba(26, 26, 26, 0.95);
         width: 100%;
         text-align: center;
-        transition: 0.3s;
+        transition: right 0.3s;
         padding: 2rem 0;
-    }
-
-    .nav-menu.active {
-        left: 0;
+        border: 2px solid #d4af37;
+        box-shadow: 0 0 20px 0 rgba(212, 175, 55, 0.15);
+        border-radius: 0 0 16px 16px;
+        font-family: 'Inter', sans-serif;
     }
 
     .nav-menu li {
         margin: 1rem 0;
+    }
+
+    .nav-menu.active {
+        right: 0;
+        left: auto;
     }
 
     .hero {
