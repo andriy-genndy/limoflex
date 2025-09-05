@@ -63,7 +63,9 @@ document.addEventListener('DOMContentLoaded', () => {
 const reservationForm = document.querySelector('.reservation-form');
 if (reservationForm) {
     reservationForm.addEventListener('submit', function(e) {
-        // Simple form validation before submission
+        e.preventDefault(); // Prevent the default form submission
+
+        // --- 1. Simple form validation before submission ---
         const requiredFields = this.querySelectorAll('[required]');
         let isValid = true;
         
@@ -78,18 +80,45 @@ if (reservationForm) {
         });
         
         if (!isValid) {
-            e.preventDefault();
             showNotification('Please fill in all required fields.', 'error');
             return;
         }
+
+        // --- 2. Combine checkbox values ---
+        const checkboxGroup = this.querySelectorAll('input[data-custom-name="entry.287569016"]:checked');
+        const checkedValues = Array.from(checkboxGroup).map(cb => cb.value);
         
-        // If validation passes, show success message and let form submit to Google Forms
-        showNotification('Thank you! Your request has been submitted. We will contact you soon.', 'success');
-        
-        // Reset form after a short delay
-        setTimeout(() => {
-            this.reset();
-        }, 1000);
+        // Find the hidden input field and set its value to the comma-separated string
+        const hiddenCheckboxInput = this.querySelector('input[name="entry.287569016"]');
+        if (hiddenCheckboxInput) {
+            hiddenCheckboxInput.value = checkedValues.join(',');
+        }
+
+        // --- 3. Submit the data using Fetch ---
+        const formData = new FormData(this);
+        const actionUrl = this.getAttribute('action');
+
+        fetch(actionUrl, {
+            method: 'POST',
+            body: formData,
+            mode: 'no-cors' // Important for submitting to Google Forms
+        }).then(response => {
+            // The request was sent successfully
+            showNotification('Thank you! Your request has been submitted. We will contact you soon.', 'success');
+            // Reset form after a short delay
+            setTimeout(() => {
+                this.reset();
+                // Also reset the date to today after submission
+                const dateInput = document.querySelector('#pickup-date');
+                if (dateInput) {
+                    dateInput.value = new Date().toISOString().split('T')[0];
+                }
+            }, 1000);
+        }).catch(error => {
+            // There was a network error
+            showNotification('There was an error submitting your request. Please try again.', 'error');
+            console.error('Form submission error:', error);
+        });
     });
 }
 
@@ -317,7 +346,7 @@ document.addEventListener('DOMContentLoaded', addSectionReveal);
 
 // Set default date to today
 document.addEventListener('DOMContentLoaded', () => {
-    const dateInput = document.querySelector('input[name*="PICKUP_DATE"]');
+    const dateInput = document.querySelector('input[name="entry.1534229657"]');
     if (dateInput) {
         const today = new Date().toISOString().split('T')[0];
         dateInput.value = today;
