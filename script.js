@@ -164,16 +164,6 @@ window.addEventListener('load', () => {
     }, 100);
 });
 
-// Parallax effect for hero section
-window.addEventListener('scroll', () => {
-    const scrolled = window.pageYOffset;
-    const hero = document.querySelector('.hero');
-    if (hero) {
-        const speed = scrolled * 0.5;
-        hero.style.transform = `translateY(${speed}px)`;
-    }
-});
-
 // Add hover effects for service cards
 document.querySelectorAll('.service-card').forEach(card => {
     card.addEventListener('mouseenter', function() {
