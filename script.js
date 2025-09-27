@@ -175,86 +175,131 @@ document.querySelectorAll('.service-card').forEach(card => {
     });
 });
 
+// Generic lightbox function for any image
+function createImageModal(imgSrc, imgAlt) {
+    const modal = document.createElement('div');
+    modal.className = 'image-modal';
+    modal.innerHTML = `
+        <div class="modal-overlay">
+            <div class="modal-content">
+                <span class="modal-close">&times;</span>
+                <img class="modal-image" src="${imgSrc}" alt="${imgAlt}" />
+            </div>
+        </div>
+    `;
+    
+    modal.style.cssText = `
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.9);
+        z-index: 10000;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        opacity: 0;
+        transition: opacity 0.3s ease;
+    `;
+    
+    const modalContent = modal.querySelector('.modal-content');
+    modalContent.style.cssText = `
+        position: relative;
+        max-width: 95%;
+        max-height: 95%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    `;
+    
+    const modalImage = modal.querySelector('.modal-image');
+    modalImage.style.cssText = `
+        max-width: 100%;
+        max-height: 100%;
+        object-fit: contain;
+        border-radius: 10px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+    `;
+    
+    const closeBtn = modal.querySelector('.modal-close');
+    closeBtn.style.cssText = `
+        position: absolute;
+        top: -40px;
+        right: 0;
+        font-size: 2rem;
+        cursor: pointer;
+        color: #fff;
+        background: rgba(0, 0, 0, 0.5);
+        border-radius: 50%;
+        width: 40px;
+        height: 40px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        z-index: 10001;
+    `;
+    
+    document.body.appendChild(modal);
+    
+    setTimeout(() => {
+        modal.style.opacity = '1';
+    }, 10);
+    
+    // Close modal functionality
+    const closeModal = () => {
+        modal.style.opacity = '0';
+        setTimeout(() => modal.remove(), 300);
+    };
+    
+    closeBtn.addEventListener('click', closeModal);
+    modal.addEventListener('click', (e) => {
+        if (e.target === modal) closeModal();
+    });
+    
+    // Close with Escape key
+    const handleEscape = (e) => {
+        if (e.key === 'Escape') {
+            closeModal();
+            document.removeEventListener('keydown', handleEscape);
+        }
+    };
+    document.addEventListener('keydown', handleEscape);
+}
+
 // Gallery lightbox effect (simple modal)
 document.querySelectorAll('.gallery-item').forEach(item => {
     item.addEventListener('click', function() {
-        const modal = document.createElement('div');
-        modal.className = 'gallery-modal';
-        modal.innerHTML = `
-            <div class="modal-overlay">
-                <div class="modal-content">
-                    <span class="modal-close">&times;</span>
-                    <div class="modal-placeholder">
-                        <i class="fas fa-camera"></i>
-                        <p>Photo will be displayed here</p>
-                        <small>Click outside to close</small>
-                    </div>
-                </div>
-            </div>
-        `;
+        // Get the image source from the clicked item
+        const img = this.querySelector('img');
+        const imgSrc = img ? img.src : null;
+        const imgAlt = img ? img.alt : 'Gallery Image';
         
-        modal.style.cssText = `
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.9);
-            z-index: 10000;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            opacity: 0;
-            transition: opacity 0.3s ease;
-        `;
+        // If no image found (still a placeholder), don't open modal
+        if (!imgSrc) return;
         
-        const modalContent = modal.querySelector('.modal-content');
-        modalContent.style.cssText = `
-            position: relative;
-            max-width: 90%;
-            max-height: 90%;
-            background: #fff;
-            border-radius: 10px;
-            padding: 2rem;
-            text-align: center;
-        `;
-        
-        const closeBtn = modal.querySelector('.modal-close');
-        closeBtn.style.cssText = `
-            position: absolute;
-            top: 10px;
-            right: 15px;
-            font-size: 2rem;
-            cursor: pointer;
-            color: #666;
-        `;
-        
-        document.body.appendChild(modal);
-        
-        setTimeout(() => {
-            modal.style.opacity = '1';
-        }, 10);
-        
-        // Close modal functionality
-        const closeModal = () => {
-            modal.style.opacity = '0';
-            setTimeout(() => modal.remove(), 300);
-        };
-        
-        closeBtn.addEventListener('click', closeModal);
-        modal.addEventListener('click', (e) => {
-            if (e.target === modal) closeModal();
-        });
-        
-        // Close with Escape key
-        const handleEscape = (e) => {
-            if (e.key === 'Escape') {
-                closeModal();
-                document.removeEventListener('keydown', handleEscape);
-            }
-        };
-        document.addEventListener('keydown', handleEscape);
+        createImageModal(imgSrc, imgAlt);
     });
+});
+
+// Hero image lightbox effect
+document.addEventListener('DOMContentLoaded', () => {
+    const heroImage = document.querySelector('.hero-vehicle');
+    if (heroImage) {
+        heroImage.addEventListener('click', function() {
+            createImageModal(this.src, this.alt);
+        });
+    }
+});
+
+// Owner photo lightbox effect
+document.addEventListener('DOMContentLoaded', () => {
+    const ownerPhoto = document.querySelector('.owner-photo');
+    if (ownerPhoto) {
+        ownerPhoto.addEventListener('click', function() {
+            createImageModal(this.src, this.alt);
+        });
+    }
 });
 
 // Add scroll progress indicator
