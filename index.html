@@ -270,32 +270,32 @@
                     </div>
                 </div>
                 <div class="contact-form">
-                    <form class="reservation-form" action="https://docs.google.com/forms/d/e/1FAIpQLScJwAqcycNnyegx5ClkOPSKs5zfqokt5hxfX5CZsIycl9Qt2g/formResponse" method="POST" target="hidden-iframe">
+                    <form class="reservation-form" id="bookingForm">
                         <div class="form-group">
-                            <input type="text" name="entry.468822782" placeholder="Name or organization" required>
+                            <input type="text" name="fullName" placeholder="Name or organization" required>
                         </div>
                         <div class="form-group">
-                            <input type="text" name="entry.347179163" placeholder="Phone number or Email" required>
+                            <input type="text" name="phone" placeholder="Phone number or Email" required>
                         </div>
                         <div class="form-group">
-                            <input type="date" name="entry.1534229657" placeholder="Pickup Date" required>
+                            <input type="date" name="date" placeholder="Pickup Date" required>
                         </div>
                         <div class="form-group">
-                            <input type="time" name="entry.2060041040" placeholder="Pickup Time" required>
+                            <input type="time" name="time" placeholder="Pickup Time" required>
                             <small style="color: #999; font-size: 0.85rem; line-height: 1.4; display: block; margin-top: 5px;">
                                 <sup>*</sup>Reservations must be made at least two hours in advance.
                             </small>
                         </div>
                         <div class="form-group">
-                            <input type="text" name="entry.1230702207" placeholder="Pickup Location" required>
+                            <input type="text" name="pickup" placeholder="Pickup Location" required>
                         </div>
                         <div class="form-group">
-                            <input type="text" name="entry.1874842645" placeholder="Drop-off Location" required>
+                            <input type="text" name="dropoff" placeholder="Drop-off Location" required>
                         </div>
                         <div class="form-group">
                             <label style="color: #ccc; font-size: 1rem; margin-bottom: 10px; display: block;"></label>
 			    <label style="color: #ccc; font-size: 1rem; margin-bottom: 10px; display: block;"></label>
-                            <select name="entry.1827638106" required>
+                            <select name="serviceType" required>
                                 <option value="" disabled selected hidden>Select Service Type*</option>
                                 <option value="Regular Ride">Regular Ride</option>
                                 <option value="Airport Transfer">Airport Transfer</option>
@@ -311,26 +311,25 @@
                             <label style="color: #ccc; font-size: 1rem; margin-bottom: 10px; display: block;">Options (check all that apply):</label>
                             <div style="display: flex; flex-direction: column; gap: 8px; margin-bottom: 10px;">
                                 <label style="display: flex; align-items: center; color: #ccc; cursor: pointer;">
-                                    <input type="checkbox" name="entry.287569016" value="Round-trip" style="margin-right: 8px;">
+                                    <input type="checkbox" name="options" value="Round-trip" style="margin-right: 8px;">
                                     Round-trip (10% discount)
                                 </label>
                                 <label style="display: flex; align-items: center; color: #ccc; cursor: pointer;">
-                                    <input type="checkbox" name="entry.287569016" value="I'm riding with a pet" style="margin-right: 8px;">
+                                    <input type="checkbox" name="options" value="With Pet" style="margin-right: 8px;">
                                     I'm riding with a pet (must be in container)
                                 </label>
                                 <label style="display: flex; align-items: center; color: #ccc; cursor: pointer;">
-                                    <input type="checkbox" name="entry.862016921" value="Yes" style="margin-right: 8px;">
+                                    <input type="checkbox" name="options" value="Waiting Time" style="margin-right: 8px;">
                                     There is waiting time (billed at $20 per 15-minute increment)
                                 </label>
                             </div>
                         </div>
                         <div class="form-group">
-                            <textarea name="entry.744990499" placeholder="Your explanations and wishes" rows="4"></textarea>
+                            <textarea name="notes" placeholder="Your explanations and wishes" rows="4"></textarea>
                         </div>
-                        <button type="submit" class="btn btn-primary">Submit Reservation Request</button>
+                        <button type="submit" class="btn btn-primary" id="submitBtn">Submit Reservation Request</button>
                     </form>
-                    <!-- Hidden iframe to prevent page redirect -->
-                    <iframe name="hidden-iframe" style="display:none;"></iframe>
+
                 </div>
             </div>
         </div>
